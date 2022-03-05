@@ -1,4 +1,4 @@
-package br.com.luizalabs.utils.entities;
+package br.com.luizalabs.entities;
 
 import lombok.Getter;
 import lombok.Setter;
