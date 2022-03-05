@@ -1,7 +1,17 @@
 package main;
 
+import br.com.luizalabs.utils.IFile;
+import br.com.luizalabs.utils.UtilString;
+import br.com.luizalabs.utils.impl.UtilFile;
+
 public class Main {
+
+    //private
+
     public static void main(String[] args) {
-        System.out.print("TESTE");
+        IFile file = new UtilFile();
+        if(file.isFile(UtilString.PATH + UtilString.FILE_DATA_1)){
+            file.read(UtilString.PATH + UtilString.FILE_DATA_1);
+        }
     }
 }

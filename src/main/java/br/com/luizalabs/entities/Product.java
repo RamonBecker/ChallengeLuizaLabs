@@ -7,15 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@AllArgsConstructor
+public class Product {
     private Integer id;
-    private String name;
-    private Order order;
-
-    public User(Integer id, String name){
-        this.id = id;
-        this.name = name;
-    }
+    private Double value;
 }
