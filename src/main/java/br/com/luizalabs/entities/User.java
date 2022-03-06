@@ -10,11 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    private Integer id;
+    private String id;
     private String name;
     private Order order;
 
-    public User(Integer id, String name){
+    public User(String id, String name){
         this.id = id;
         this.name = name;
     }

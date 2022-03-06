@@ -1,4 +1,4 @@
-package br.com.luizalabs.utils;
+package br.com.luizalabs.utils.impl;
 
 import java.text.DateFormat;
 import java.text.ParseException;
