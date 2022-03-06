@@ -6,11 +6,15 @@ public interface IDelimiter {
 
     String find(String line, int positionInitial, int positionFinal);
 
-    void findDigits(String line);
+    void findByDigits(String line);
 
-    void findZero(String line);
+    void findByZero(String line);
+
+    void findBySpace(String line);
+
+    void findByPositionNotZero(String line);
 
     void findReverse(String line);
 
-    void findSpace(String line);
+
 }

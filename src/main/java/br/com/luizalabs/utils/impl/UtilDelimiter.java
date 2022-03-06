@@ -2,11 +2,18 @@ package br.com.luizalabs.utils.impl;
 
 
 import br.com.luizalabs.entities.Order;
+import br.com.luizalabs.entities.Product;
 import br.com.luizalabs.entities.User;
 import br.com.luizalabs.utils.IDelimiter;
-import br.com.luizalabs.utils.TypeDelimiter;
-import br.com.luizalabs.utils.factory.FactoryUser;
+import br.com.luizalabs.utils.UtilDate;
 import lombok.Getter;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Getter
 public class UtilDelimiter implements IDelimiter {
@@ -19,79 +26,69 @@ public class UtilDelimiter implements IDelimiter {
         String idUser = find(line, 0, j);
         String userName = find(line, k, line.length());
         this.line = userName;
-        findZero(userName);
+        findByZero(userName);
         userName = find(userName, 0, j);
         return new String[]{idUser, userName};
     }
 
-    private String order(String line){
+    private String order(String line) {
         String orderId = find(line, 0, j - 1);
         findReverse(orderId);
         orderId = find(orderId, 0, j + 1);
         return orderId;
     }
 
-    private String[] prod(String line, String lineOrderId){
+    private String[] prod(String line, String lineOrderId) {
         String prodID = find(line, lineOrderId.length(), line.length());
         line = prodID;
-        findSpace(prodID);
+
+        findBySpace(prodID);
         prodID = find(prodID, 0, j);
+        findReverse(prodID);
+        prodID = find(prodID, j, prodID.length());
+
+
         String value = find(line, k, line.length());
-        line = value;
-        findDigits(value);
+        this.line = value;
+        findByDigits(value);
         value = find(value, 0, j + 1);
+
         return new String[]{prodID, value};
     }
 
 
     @Override
     public void lineReading(String line) {
-        findSpace(line);
-        /*
-        String idUser = find(line, 0, j);
-
-        String userName = find(line, k, line.length());
-        line = userName;
-        findZero(userName);
-
-        userName = find(userName, 0, j);
-
-
-         */
+        findBySpace(line);
 
         String[] attributesUser = user(line);
         User user = new User(Integer.parseInt(attributesUser[0]), attributesUser[1]);
+
         line = this.line;
-        line = find(line, attributesUser[1].length(), line.length());
+        line = find(line, user.getName().length(), line.length());
 
-        findSpace(line);
-        String orderId = find(line, 0, j - 1);
+        findBySpace(line);
 
-        findReverse(orderId);
+        Order order = new Order(order(line));
 
-        orderId = find(orderId, 0, j + 1);
+        String[] attributesProduct = prod(line, String.valueOf(order.getId()));
+        Product product = new Product(attributesProduct[0], Double.parseDouble(attributesProduct[1]));
 
-        String prodI = find(line, orderId.length(), line.length());
-        line = prodI;
-        findSpace(prodI);
+        line = this.line;
 
-        prodI = find(prodI, 0, j);
+        String date = find(line, String.valueOf(product.getValue()).length(), line.length());
 
-
-        String value = find(line, k, line.length());
-        line = value;
-        findDigits(value);
-        value = find(value, 0, j + 1);
-
-        String date = find(line, value.length(), line.length());
+        findByPositionNotZero(order.getId());
+        order.setId(find(order.getId(), j, order.getId().length()));
+        order.setDate(UtilDate.formatDate(date));
 
         System.out.println("-----------");
         System.out.println("UserId: " + user.getId());
         System.out.println("Username: " + user.getName());
-        System.out.println("OrderId: " + orderId);
-        System.out.println("ProdId: " + prodI);
-        System.out.println("Value: " + value);
-        System.out.println("Date: " + date);
+        System.out.println("OrderId: " + order.getId());
+        System.out.println("ProdId: " + product.getId());
+        System.out.println("Value: " + product.getValue());
+        System.out.println("Date: " + order.getDate());
         System.out.println("-----------");
 
     }
@@ -102,7 +99,7 @@ public class UtilDelimiter implements IDelimiter {
     }
 
     @Override
-    public void findSpace(String line) {
+    public void findBySpace(String line) {
 
         boolean first_space = false;
 
@@ -126,7 +123,7 @@ public class UtilDelimiter implements IDelimiter {
     }
 
     @Override
-    public void findDigits(String line) {
+    public void findByDigits(String line) {
         int cont = 0;
         int aux_digit = 0;
 
@@ -164,7 +161,8 @@ public class UtilDelimiter implements IDelimiter {
         }
     }
 
-    private void findPositionNotZero(String line) {
+    @Override
+    public void findByPositionNotZero(String line) {
         for (int i = 0; i < line.length(); i++) {
             char character = line.charAt(i);
             if (character != '0') {
@@ -175,7 +173,7 @@ public class UtilDelimiter implements IDelimiter {
     }
 
     @Override
-    public void findZero(String line) {
+    public void findByZero(String line) {
         for (int i = 0; i < line.length(); i++) {
             char character = line.charAt(i);
             if (character == '0') {
