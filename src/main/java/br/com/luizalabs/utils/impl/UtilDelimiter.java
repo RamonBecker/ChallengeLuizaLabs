@@ -4,12 +4,16 @@ package br.com.luizalabs.utils.impl;
 import br.com.luizalabs.entities.Order;
 import br.com.luizalabs.entities.Product;
 import br.com.luizalabs.entities.User;
+import br.com.luizalabs.exceptions.UpdateObjectException;
+import br.com.luizalabs.services.impl.UserService;
 import br.com.luizalabs.utils.IDelimiter;
 import br.com.luizalabs.utils.factory.FactoryOrder;
 import br.com.luizalabs.utils.factory.FactoryProduct;
 import br.com.luizalabs.utils.factory.FactoryUser;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.security.Provider;
 
 @Getter
 @Setter
@@ -21,32 +25,18 @@ public class UtilDelimiter implements IDelimiter {
 
     @Override
     public void lineReading(String line) {
-        findBySpace(line);
+        try {
+            User user = new FactoryUser(this).user(line);
+            line = getLine();
+            line = find(line, user.getName().length(), line.length());
+            Order order = new FactoryOrder(this).order(line);
+            Product product = new FactoryProduct(this).prod(line, String.valueOf(order.getId()));
+            new FactoryOrder(this).updateDateOrder(order, product, line);
+            new UserService().getResults(user, order, product);
 
-        User user = new FactoryUser(this).user(line);
-        
-        line = getLine();
-        line = find(line, user.getName().length(), line.length());
-
-        findBySpace(line);
-
-        Order order = new FactoryOrder(this).order(line);
-
-        Product product = new FactoryProduct(this).prod(line, String.valueOf(order.getId()));
-        line = getLine();
-
-        new FactoryOrder(this).updateDateOrder(order, product, line);
-
-        System.out.println("-----------");
-        System.out.println("UserId: " + user.getId());
-        System.out.println("Username: " + user.getName());
-        System.out.println("OrderId: " + order.getId());
-        System.out.println("ProdId: " + product.getId());
-        System.out.println("Value: " + product.getValue());
-        System.out.println("Date: " + order.getDate());
-        System.out.println("-----------");
-
-
+        } catch (InstantiationError | UpdateObjectException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override

@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,10 +15,18 @@ import lombok.Setter;
 public class User {
     private String id;
     private String name;
-    private Order order;
+    private Map<String, Order> orders;
 
-    public User(String id, String name){
+    public User(String id, String name) {
         this.id = id;
         this.name = name;
     }
+
+    public Map<String, Order> getOrders() {
+        if (orders == null) {
+            orders = new TreeMap<>();
+        }
+        return orders;
+    }
+
 }
