@@ -6,21 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class Order {
-    private String id;
+    private Integer id;
     private Double total;
     private LocalDate date;
     private List<Product> products;
 
-    public Order(String id) {
+    public Order(Integer id) {
         this.id = id;
     }
 
@@ -29,5 +27,18 @@ public class Order {
             products = new ArrayList<>();
         }
         return products;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

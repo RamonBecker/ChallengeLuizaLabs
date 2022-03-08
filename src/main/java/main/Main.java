@@ -9,10 +9,11 @@ public class Main {
 
     public static void main(String[] args) {
         IFile file = new UtilFile();
-        if (file.isFile(UtilString.PATH + UtilString.FILE_DATA_1)) {
+        if (file.isFile(UtilString.PATH + UtilString.FILE_DATA_1) && file.isFile(UtilString.PATH + UtilString.FILE_DATA_2)) {
             file.read(UtilString.PATH + UtilString.FILE_DATA_1);
+            file.read(UtilString.PATH + UtilString.FILE_DATA_2);
         }
+        
         DBUserImpl.getInstance().print();
-       // DBUserImpl.getInstance().printProd();
     }
 }

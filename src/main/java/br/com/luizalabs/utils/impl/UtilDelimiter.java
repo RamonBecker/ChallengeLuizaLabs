@@ -31,7 +31,7 @@ public class UtilDelimiter implements IDelimiter {
             line = find(line, user.getName().length(), line.length());
             Order order = new FactoryOrder(this).order(line);
             Product product = new FactoryProduct(this).prod(line, String.valueOf(order.getId()));
-            new FactoryOrder(this).updateDateOrder(order, product, line);
+            order = new FactoryOrder(this).updateDateOrder(order, product, line);
             new UserService().getResults(user, order, product);
 
         } catch (InstantiationError | UpdateObjectException e) {

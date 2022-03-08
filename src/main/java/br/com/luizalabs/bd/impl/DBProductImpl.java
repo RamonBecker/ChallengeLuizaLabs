@@ -4,10 +4,7 @@ import br.com.luizalabs.bd.IDBProduct;
 import br.com.luizalabs.entities.Order;
 import br.com.luizalabs.entities.Product;
 import br.com.luizalabs.entities.User;
-
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class DBProductImpl implements IDBProduct {
 
@@ -25,18 +22,28 @@ public class DBProductImpl implements IDBProduct {
 
     @Override
     public void insert(User user, Order order, Product product) {
-        List<Product> products = user.getOrders().get(order.getId()).getProducts();
-        products.add(product);
-        user.getOrders().get(order.getId()).setProducts(products);
-        order.setTotal(total(order, products));
+        user.getOrders().get(order.getId()).
+                setProducts(
+                        add(user.getOrders().get(order.getId()).getProducts(), product)
+                );
+        order.setTotal(total(order,
+                            user.getOrders().get(order.getId()).getProducts()
+                      )
+        );
     }
 
     @Override
     public Double total(Order order, List<Product> products) {
-        Double valueTotal = order.getTotal();
+        Double valueTotal = 0.0;
         for (Product product : products) {
             valueTotal += product.getValue();
         }
-        return valueTotal;
+        return (double) Math.round(valueTotal * 100) / 100;
+    }
+
+    private List<Product> add(List<Product> products, Product product) {
+        products.add(product);
+        products.sort((p1, p2) -> p1.compare(p1, p2));
+        return products;
     }
 }

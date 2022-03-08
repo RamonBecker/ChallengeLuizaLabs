@@ -22,24 +22,32 @@ public class FactoryOrder {
     }
 
     public Order order(String line) throws InstanceException {
+        if (delimiter == null) {
+            throw new InstanceException(messageCreateInstanceException + Order.class);
+        }
+
+        String orderId = "";
+
         if (delimiter instanceof UtilDelimiter) {
             delimiter.findBySpace(line);
-            String orderId = delimiter.find(line, 0, ((UtilDelimiter) delimiter).getJ() - 1);
+            orderId = delimiter.find(line, 0, ((UtilDelimiter) delimiter).getJ() - 1);
             delimiter.findReverse(orderId);
             orderId = delimiter.find(orderId, 0, ((UtilDelimiter) delimiter).getJ() + 1);
-            return new Order(String.valueOf(Integer.parseInt(orderId)));
         }
-        throw new InstanceException(messageCreateInstanceException + Order.class);
+        return new Order(Integer.parseInt(orderId));
     }
 
-    public void updateDateOrder(Order order, Product product, String line) throws UpdateObjectException {
-        if (delimiter instanceof UtilDelimiter) {
-            line =  ((UtilDelimiter) delimiter).getLine();
-            String date = delimiter.find(line, String.valueOf(product.getValue()).length(), line.length());
-            delimiter.findByPositionNotZero(order.getId());
-            order.setDate(UtilDate.formatDate(date));
-            return;
+    public Order updateDateOrder(Order order, Product product, String line) throws UpdateObjectException {
+        if (delimiter == null) {
+            throw new UpdateObjectException(messageUpdate + Order.class);
         }
-        throw new UpdateObjectException(messageUpdate + Order.class);
+
+        if (delimiter instanceof UtilDelimiter) {
+            line = ((UtilDelimiter) delimiter).getLine();
+            String date = delimiter.find(line, String.valueOf(product.getValue()).length(), line.length());
+            delimiter.findByPositionNotZero(String.valueOf(order.getId()));
+            order.setDate(UtilDate.formatDate(date));
+        }
+        return order;
     }
 }

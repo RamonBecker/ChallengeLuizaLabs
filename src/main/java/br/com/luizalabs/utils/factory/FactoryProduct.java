@@ -18,8 +18,15 @@ public class FactoryProduct {
     }
 
     public Product prod(String line, String lineOrderId) throws InstanceException {
+        if (delimiter == null) {
+            throw new InstanceException(messageCreateInstanceException + Product.class);
+        }
+
+        String prodID = "";
+        String value = "";
+
         if (delimiter instanceof UtilDelimiter) {
-            String prodID = delimiter.find(line, lineOrderId.length(), line.length());
+            prodID = delimiter.find(line, lineOrderId.length(), line.length());
             line = prodID;
 
             delimiter.findBySpace(prodID);
@@ -27,8 +34,7 @@ public class FactoryProduct {
             delimiter.findReverse(prodID);
             prodID = delimiter.find(prodID, ((UtilDelimiter) delimiter).getJ(), prodID.length());
 
-
-            String value = delimiter.find(line, ((UtilDelimiter) delimiter).getK(), line.length());
+            value = delimiter.find(line, ((UtilDelimiter) delimiter).getK(), line.length());
             ((UtilDelimiter) delimiter).setLine(value);
             delimiter.findByDigits(value);
             value = delimiter.find(value, 0, ((UtilDelimiter) delimiter).getJ() + 1);
@@ -38,10 +44,9 @@ public class FactoryProduct {
             } catch (Exception e) {
                 prodID = "0";
             }
-
-            return new Product(prodID, Double.parseDouble(value));
         }
-        throw new InstanceException(messageCreateInstanceException + Product.class);
+
+        return new Product(Integer.parseInt(prodID), Double.parseDouble(value));
     }
 
 }

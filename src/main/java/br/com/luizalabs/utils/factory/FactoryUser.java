@@ -19,15 +19,23 @@ public class FactoryUser {
 
 
     public User user(String line) throws InstanceException {
+
+        if (delimiter == null) {
+            throw new InstanceException(messageCreateInstanceException + User.class);
+        }
+
+        String idUser = "";
+        String username = "";
+
         if (delimiter instanceof UtilDelimiter) {
             delimiter.findBySpace(line);
-            String idUser = delimiter.find(line, 0, ((UtilDelimiter) delimiter).getJ());
-            String username = delimiter.find(line, ((UtilDelimiter) delimiter).getK(), line.length());
+            idUser = delimiter.find(line, 0, ((UtilDelimiter) delimiter).getJ());
+            username = delimiter.find(line, ((UtilDelimiter) delimiter).getK(), line.length());
             ((UtilDelimiter) delimiter).setLine(username);
             delimiter.findByZero(username);
             username = delimiter.find(username, 0, ((UtilDelimiter) delimiter).getJ());
-            return new User(String.valueOf(Integer.parseInt(idUser)), username);
+
         }
-        throw new InstanceException(messageCreateInstanceException + User.class);
+        return new User(Integer.parseInt(idUser), username);
     }
 }

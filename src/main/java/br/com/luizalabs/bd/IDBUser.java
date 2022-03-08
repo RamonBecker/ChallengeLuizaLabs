@@ -10,7 +10,5 @@ public interface IDBUser {
 
     void insert(User user, Order order, Product product);
 
-    User get(User user);
-
     void print();
 }

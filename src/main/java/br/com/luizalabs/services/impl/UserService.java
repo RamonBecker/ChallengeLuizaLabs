@@ -24,8 +24,7 @@ public class UserService implements IUserService {
 
     @Override
     public void getResults(User user, Order order, Product product) {
-
-        /*
+/*
         System.out.println("UserId: " + user.getId());
         System.out.println("Username: " + user.getName());
         System.out.println("OrderId: " + order.getId());
@@ -34,8 +33,7 @@ public class UserService implements IUserService {
         System.out.println("Date: " + order.getDate());
 
 
-         */
-
+ */
         getDBUser().insert(user, order, product);
     }
 }

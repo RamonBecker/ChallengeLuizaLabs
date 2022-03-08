@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -13,20 +14,24 @@ import java.util.TreeMap;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    private String id;
+    private Integer id;
     private String name;
-    private Map<String, Order> orders;
+    private Map<Integer, Order> orders;
 
-    public User(String id, String name) {
+    public User(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Map<String, Order> getOrders() {
+    public Map<Integer, Order> getOrders() {
         if (orders == null) {
-            orders = new TreeMap<>();
+            orders = new TreeMap<>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer orderId1, Integer orderId2) {
+                    return orderId1 - orderId2;
+                }
+            });
         }
         return orders;
     }
-
 }
