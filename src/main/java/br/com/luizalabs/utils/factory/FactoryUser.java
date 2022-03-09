@@ -6,7 +6,7 @@ import br.com.luizalabs.utils.IDelimiter;
 import br.com.luizalabs.utils.impl.UtilDelimiter;
 import lombok.NoArgsConstructor;
 
-import static br.com.luizalabs.utils.UtilString.messageCreateInstanceException;
+import static br.com.luizalabs.utils.UtilString.MESSAGE_CREATE_INSTANCE_EXCEPTION;
 
 @NoArgsConstructor
 public class FactoryUser {
@@ -21,7 +21,7 @@ public class FactoryUser {
     public User user(String line) throws InstanceException {
 
         if (delimiter == null) {
-            throw new InstanceException(messageCreateInstanceException + User.class);
+            throw new InstanceException(MESSAGE_CREATE_INSTANCE_EXCEPTION + User.class);
         }
 
         String idUser = "";

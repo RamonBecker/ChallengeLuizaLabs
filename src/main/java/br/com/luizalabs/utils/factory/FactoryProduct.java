@@ -6,7 +6,7 @@ import br.com.luizalabs.utils.IDelimiter;
 import br.com.luizalabs.utils.impl.UtilDelimiter;
 import lombok.NoArgsConstructor;
 
-import static br.com.luizalabs.utils.UtilString.messageCreateInstanceException;
+import static br.com.luizalabs.utils.UtilString.MESSAGE_CREATE_INSTANCE_EXCEPTION;
 
 @NoArgsConstructor
 
@@ -19,7 +19,7 @@ public class FactoryProduct {
 
     public Product prod(String line, String lineOrderId) throws InstanceException {
         if (delimiter == null) {
-            throw new InstanceException(messageCreateInstanceException + Product.class);
+            throw new InstanceException(MESSAGE_CREATE_INSTANCE_EXCEPTION + Product.class);
         }
 
         String prodID = "";

@@ -9,8 +9,8 @@ import br.com.luizalabs.utils.impl.UtilDate;
 import br.com.luizalabs.utils.impl.UtilDelimiter;
 import lombok.NoArgsConstructor;
 
-import static br.com.luizalabs.utils.UtilString.messageCreateInstanceException;
-import static br.com.luizalabs.utils.UtilString.messageUpdate;
+import static br.com.luizalabs.utils.UtilString.MESSAGE_CREATE_INSTANCE_EXCEPTION;
+import static br.com.luizalabs.utils.UtilString.MESSAGE_UPDATE_EXCEPTION;
 
 @NoArgsConstructor
 public class FactoryOrder {
@@ -23,7 +23,7 @@ public class FactoryOrder {
 
     public Order order(String line) throws InstanceException {
         if (delimiter == null) {
-            throw new InstanceException(messageCreateInstanceException + Order.class);
+            throw new InstanceException(MESSAGE_CREATE_INSTANCE_EXCEPTION + Order.class);
         }
 
         String orderId = "";
@@ -39,7 +39,7 @@ public class FactoryOrder {
 
     public Order updateDateOrder(Order order, Product product, String line) throws UpdateObjectException {
         if (delimiter == null) {
-            throw new UpdateObjectException(messageUpdate + Order.class);
+            throw new UpdateObjectException(MESSAGE_UPDATE_EXCEPTION + Order.class);
         }
 
         if (delimiter instanceof UtilDelimiter) {

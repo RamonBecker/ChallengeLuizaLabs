@@ -34,25 +34,6 @@ public class DBUserImpl implements IDBUser {
         return users;
     }
 
-    public void print() {
-        System.out.println("-------------");
-        for (Map.Entry<Integer, User> entry : users.entrySet()) {
-            System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue().getName());
-            for (Map.Entry<Integer, Order> order : entry.getValue().getOrders().entrySet()) {
-                System.out.println("-------------");
-                System.out.println("Order :" + order.getValue().getId());
-                System.out.println("Total: " + order.getValue().getTotal());
-                System.out.println("Date: " + order.getValue().getDate());
-
-                for (Product product : order.getValue().getProducts()) {
-                    System.out.println("Prod id: " + product.getId());
-                    System.out.println("Value: " + product.getValue());
-                }
-            }
-        }
-        System.out.println("-------------");
-    }
-
     @Override
     public boolean isOnList(User user) {
         return getUsers().containsKey(user.getId());
