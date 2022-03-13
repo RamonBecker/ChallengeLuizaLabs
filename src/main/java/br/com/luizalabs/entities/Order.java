@@ -1,44 +1,28 @@
 package br.com.luizalabs.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
 public class Order {
     private Integer id;
-    private Double total;
     private LocalDate date;
+    private Double valueTotal;
     private List<Product> products;
 
-    public Order(Integer id) {
+    public Order(Integer id, LocalDate date) {
         this.id = id;
+        this.date = date;
+        this.valueTotal = 0.0;
+        this.products = new ArrayList<>();
     }
 
-    public List<Product> getProducts() {
-        if (products == null) {
-            products = new ArrayList<>();
-        }
-        return products;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return Objects.equals(id, order.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setValueTotal(Product product) {
+        products.add(product);
+        products.sort((p1, p2) -> p1.compare(p1, p2));
+        this.valueTotal += product.getValue();
+        this.valueTotal = (double) Math.round(this.valueTotal * 100) / 100;
     }
 }
